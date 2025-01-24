@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Shapes Edited</title>
+</head>
+<body>
+    <div id="canvasDiv"></div>
+    <div id="editDiv"></div>
+
+    <script>
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const inputWitdh = "20%";
+        const inputHeight = "5vh";
+
+        function createCanvas(){
+            const canvasWidth = parseInt(document.getElementById("canvasWidth").value);
+            const canvasHeight = parseInt(document.getElementById("canvasHeight").value);
+            
+            const r = parseInt(document.querySelector('input[placeholder="R"]').value) || 0;
+            const g = parseInt(document.querySelector('input[placeholder="G"]').value) || 0;
+            const b = parseInt(document.querySelector('input[placeholder="B"]').value) || 0;
+            const a = parseFloat(document.querySelector('input[placeholder="A"]').value) || 1;
+
+            if (!isNaN(canvasWidth) && !isNaN(canvasHeight) && canvasWidth > 0 && canvasHeight > 0) {
+                // Set the canvas dimensions
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+
+                // Clear previous canvas if exists and append the new one
+                const canvasDiv = document.getElementById("canvasDiv");
+                canvasDiv.innerHTML = ""; // Clear previous canvas
+                canvasDiv.appendChild(canvas);
+
+                // Set the background color dynamically with the alpha value
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "black";
+            } else {
+                console.log("Please enter valid dimensions for the canvas.");
+            }
+        }
+        setInterval(createCanvas, 100)
+
+        function createCanvasEdited(){
+            const editDiv = document.getElementById("editDiv");
+
+            // Canvas Width
+            const labelCanvasWitdh = document.createElement("label");
+            labelCanvasWitdh.textContent = "Canvas Width: ";
+            editDiv.appendChild(labelCanvasWitdh);
+
+            const inputCanvasWitdh = document.createElement("input");
+            inputCanvasWitdh.id = "canvasWidth";
+            inputCanvasWitdh.type = "number";
+            inputCanvasWitdh.min = 0;
+            inputCanvasWitdh.max = window.innerWidth;
+            inputCanvasWitdh.step = "1";
+            inputCanvasWitdh.value = "500";
+            inputCanvasWitdh.placeholder = "canvas width";
+            inputCanvasWitdh.style.width = inputWitdh;
+            inputCanvasWitdh.style.height = inputHeight;
+            editDiv.appendChild(inputCanvasWitdh);
+
+            // Canvas Height
+            const labelCanvasHeight = document.createElement("label");
+            labelCanvasHeight.textContent = "Canvas Height: ";
+            editDiv.appendChild(labelCanvasHeight);
+
+            const inputCanvasHeight = document.createElement("input");
+            inputCanvasHeight.id = "canvasHeight";
+            inputCanvasHeight.type = "number";
+            inputCanvasHeight.min = 0;
+            inputCanvasHeight.max = window.innerHeight;
+            inputCanvasHeight.step = "1";
+            inputCanvasHeight.value = "500";
+            inputCanvasHeight.placeholder = "canvas height";
+            inputCanvasHeight.style.width = inputWitdh;
+            inputCanvasHeight.style.height = inputHeight;
+            editDiv.appendChild(inputCanvasHeight);
+
+            // Canvas Backgroundcolor
+            const labelCanvasBGColor = document.createElement("label");
+            labelCanvasBGColor.innerHTML = "<br>"+"Canvas backgroundcolor (RGBa): ";
+            editDiv.appendChild(labelCanvasBGColor);
+
+            const canvasRGBAContainer = document.createElement("div");
+            // Create input fields for Red, Green, Blue, and Alpha
+            const redCanvasBGInput = document.createElement('input');
+            const greenCanvasBGInput = document.createElement('input');
+            const blueCanvasBGInput = document.createElement('input');
+            const alphaCanvasBGInput = document.createElement('input');
+
+            // Set attributes for the RGB inputs
+            [redCanvasBGInput, greenCanvasBGInput, blueCanvasBGInput].forEach((input, index) => {
+                input.type = 'number';
+                input.min = 0;
+                input.max = 255;
+                input.value = 255; // Default value
+                input.style.width = '60px'; // Set width
+                if (index === 0) input.placeholder = 'R'; // Placeholder for Red
+                if (index === 0) input.style.color = 'red';
+                if (index === 1) input.placeholder = 'G'; // Placeholder for Green
+                if (index === 1) input.style.color = 'green';
+                if (index === 2) input.placeholder = 'B'; // Placeholder for Blue
+                if (index === 2) input.style.color = 'blue';
+                if (input >= 255){
+                    input.value = 255;
+                }
+            });
+
+            // Set attributes for the Alpha input
+            alphaCanvasBGInput.type = 'number';
+            alphaCanvasBGInput.min = 0;
+            alphaCanvasBGInput.max = 1;
+            alphaCanvasBGInput.value = 1; // Default value
+            alphaCanvasBGInput.step = "0.1";
+            alphaCanvasBGInput.style.width = '60px'; // Set width
+            alphaCanvasBGInput.placeholder = 'A'; // Placeholder for Alpha
+            alphaCanvasBGInput.style.color = 'black';
+
+            // Append the inputs to the container
+            canvasRGBAContainer.appendChild(redCanvasBGInput);
+            canvasRGBAContainer.appendChild(greenCanvasBGInput);
+            canvasRGBAContainer.appendChild(blueCanvasBGInput);
+            canvasRGBAContainer.appendChild(alphaCanvasBGInput);
+
+            editDiv.appendChild(canvasRGBAContainer);
+
+            // shapes [square,cyclies,triangle]
+            const labelShapeSquareBGColor = document.createElement('label');
+            labelShapeSquareBGColor.innerHTML = "<br>"+"Square backgroundcolor (RGBa): ";
+            editDiv.appendChild(labelShapeSquareBGColor);
+
+            const shapeSquareRGBAContainer = document.createElement("div");
+            // Create input fields for Red, Green, Blue, and Alpha
+            const redShapeSquareBGInput = document.createElement('input');
+            const greenShapeSquareBGInput = document.createElement('input');
+            const blueShapeSquareBGInput = document.createElement('input');
+            const alphaShapeSquareBGInput = document.createElement('input');
+
+            // Set attributes for the RGB inputs
+            [redShapeSquareBGInput, greenShapeSquareBGInput, blueShapeSquareBGInput].forEach((input, index) => {
+                input.type = 'number';
+                input.min = 0;
+                input.max = 255;
+                input.value = 255; // Default value
+                input.style.width = '60px'; // Set width
+                if (index === 0) input.placeholder = 'R'; // Placeholder for Red
+                if (index === 0) input.style.color = 'red';
+                if (index === 1) input.placeholder = 'G'; // Placeholder for Green
+                if (index === 1) input.style.color = 'green';
+                if (index === 2) input.placeholder = 'B'; // Placeholder for Blue
+                if (index === 2) input.style.color = 'blue';
+                if (input >= 255){
+                    input.value = 255;
+                }
+            });
+
+            // Set attributes for the Alpha input
+            alphaShapeSquareBGInput.type = 'number';
+            alphaShapeSquareBGInput.min = 0;
+            alphaShapeSquareBGInput.max = 1;
+            alphaShapeSquareBGInput.value = 1; // Default value
+            alphaShapeSquareBGInput.step = "0.1";
+            alphaShapeSquareBGInput.style.width = '60px'; // Set width
+            alphaShapeSquareBGInput.placeholder = 'A'; // Placeholder for Alpha
+            alphaShapeSquareBGInput.style.color = 'black';
+                    
+            // Append the inputs to the container
+            shapeSquareRGBAContainer.appendChild(redShapeSquareBGInput);
+            shapeSquareRGBAContainer.appendChild(greenShapeSquareBGInput);
+            shapeSquareRGBAContainer.appendChild(blueShapeSquareBGInput);
+            shapeSquareRGBAContainer.appendChild(alphaShapeSquareBGInput);
+                    
+            editDiv.appendChild(shapeSquareRGBAContainer);
+
+            // Create the "Create Canvas" button
+            const createButton = document.createElement("button");
+            createButton.innerHTML = "Create Canvas";
+            createButton.style.width = inputWitdh;
+            createButton.style.height = inputHeight;
+            createButton.onclick = createCanvas;
+            editDiv.appendChild(createButton);
+        }
+
+        // Initialize the canvas editing interface
+        createCanvasEdited();
+    </script>
+
+    <style>
+        body {
+            background-color: grey;
+            margin: 0;
+        }
+    </style>
+</body>
+</html>
